@@ -14,6 +14,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container shadow-lg p-4 mb-5 mt-4">
         <h2 class="text-primary">Survey Questions</h2>
@@ -137,24 +138,73 @@
             <option value="5">5 (Strongly Agree)</option>
         </select>
         <br>
-    
+
         <button id="submit" type="button" class="btn btn-primary my-3" data-toggle="modal" data-target="#modal">
             <i class="fa fa-check-circle" aria-hidden="true"></i> Submit
         </button>
     </div>
 
-    <!-- modal -->
-
-    
+    <!--modal-->
+    <div class="modal" id="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="photo" src="" height="300px" width="300px">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="footer">
-            <div class="container">
-                <p>
-                    <a href="/api/friends">API Friends List</a>
-                    |
-                    <a href="https://github.com/elizairwin/FriendFinder">GitHub Repo</a>
-                </p>
-            </div>
-        </footer>
+        <div class="container">
+            <p>
+                <a href="/api/friends">API Friends List</a>
+                |
+                <a href="https://github.com/elizairwin/FriendFinder">GitHub Repo</a>
+            </p>
+        </div>
+    </footer>
+
+    </div>
+    <script type='text/javascript'>
+        //on click function
+        $("#submit").on("click", function (event) {
+            //stops normal submit functioning
+            event.preventDefault();
+            //user input
+            var userInput = {
+                name: $("#name").val(),
+                photo: $("#photo").val(),
+                scores: [
+                    $("#q1").val(),
+                    $("#q2").val(),
+                    $("#q3").val(),
+                    $("#q4").val(),
+                    $("#q5").val(),
+                    $("#q6").val(),
+                    $("#q7").val(),
+                    $("#q8").val(),
+                    $("#q9").val(),
+                    $("#q10").val()
+                ]
+            }
+            console.log(userInput.scores);
+            let currentURL = window.location.origin;
+            $.post(currentURL + '/api/friends', userInput, function (data) {
+                console.log(data);
+                //clear
+                $('#name').val("");
+                $('#photo').val("");
+            });
+            
+
 </body>
+
 </html>
