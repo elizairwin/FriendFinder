@@ -1,14 +1,14 @@
 //what data the user sees and what is posted from the server
-let friendsInfo = require('../data/friends.js');
+let friendsData = require('../data/friends');
 
 module.exports = function (app) {
 
-  app.get('/api/friends', function(req, res) {
-    return res.json(friendsInfo)
+  app.get('/api/friends', function (req, res) {
+    return res.json(friendsData)
   });
 
   app.post('/api/friends', function(req, res) {
-    friendsInfo.push(req.body);
+    friendsData.push(req.body);
     res.json();
   });
 
