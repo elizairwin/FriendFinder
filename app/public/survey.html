@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <title>Friend Finder</title>
     <style>
         .container {
@@ -149,7 +151,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"></h4>
+                    <h4 class="modal-title">Modal Heading</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body text-center">
@@ -195,17 +197,49 @@
                     $("#q10").val()
                 ]
             }
-            
+            console.log(userInput.scores);
+            let currentURL = window.location.origin;
+            $.post(currentURL + '/api/friends', userInput, function (data) {
+                console.log(data);
+                //clearing out the forms
+                $('#name').val("");
+                $('#photo').val("");
+            });
+
+            //ajax
+            $.ajax({ url: currentURL + '/api/friends', method: "GET" })
+                .done(function (friendsData) {
+                    //get data
+                    let theScores = friendsData.slice(-1).pop().scores.map(Number);
+                    let totalArr = [];
+                    let friendsArr = friendsData.slice(0, -1);
+                    for (let i = 0; i < friendsArr.length; i++) {
+                        let friendsArrScores = friendsArr[i].scores.map(Number);
+                        let totalDiff = 0;
+                        for (let i = 0; i < theScores.length; i++) {
+                            //total diff
+                            totalDiff += Math.abs(theScores[i] - friendsArrScores[i]);
+                        }
+                        totalArr.push(totalDiff);
+                    }
+                    console.log(totalArr);
+                    indexBF = totalArr.indexOf(Math.min.apply(null, totalArr));
+                    console.log(indexBF);
+                    matchedFriendName = friendsArr[indexBF].name;
+                    matchedFriendPhoto = friendsArr[indexBF].photo;
+                    console.log(matchedFriendName);
+                    $('.modal-title').html("<h1>" + matchedFriendName + "</h1>")
+                    $("img").attr("src", matchedFriendPhoto);
+                })
+        });
 
     </script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
 </body>
 
 </html>

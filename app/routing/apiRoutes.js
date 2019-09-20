@@ -1,5 +1,5 @@
 //what data the user sees and what is posted from the server
-let friendsData = require('../data/friends');
+let friendsData = require('../data/friends.js');
 
 module.exports = function (app) {
 
