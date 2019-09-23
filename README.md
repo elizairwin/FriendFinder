@@ -15,7 +15,7 @@ This is a compatibility-based friend finding application - similar to a dating a
 
 ## Instructions for Use:
 
-* Click here to use the app:
+* Click here to use the app: https://secure-dawn-46163.herokuapp.com/
 * Fill in the survey and wait for results 
 
 ## My Role in App Developement: 
